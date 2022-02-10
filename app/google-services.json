@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1007977054390",
+    "project_id": "vedantattendancesystem",
+    "storage_bucket": "vedantattendancesystem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007977054390:android:08c73fdaf50859b057e617",
+        "android_client_info": {
+          "package_name": "com.jams.vedantattendancesystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007977054390-unc8fibind0i1t2qod9u5tgt2qmtoh7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHMAuQp3noPnCRPWQ35iba_IMBov_GrcM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007977054390-unc8fibind0i1t2qod9u5tgt2qmtoh7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

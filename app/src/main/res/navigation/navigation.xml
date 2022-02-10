@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.jams.vedantattendancesystem.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_employeeLogin"
+            app:destination="@id/employeeLogin" />
+    </fragment>
+    <fragment
+        android:id="@+id/employeeLogin"
+        android:name="com.jams.vedantattendancesystem.EmployeeLogin"
+        android:label="fragment_employee_login"
+        tools:layout="@layout/fragment_employee_login" >
+        <action
+            android:id="@+id/action_employeeLogin_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.jams.vedantattendancesystem.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_employeeDashBoard"
+            app:destination="@id/employeeDashBoard" />
+    </fragment>
+    <fragment
+        android:id="@+id/employeeDashBoard"
+        android:name="com.jams.vedantattendancesystem.EmployeeDashBoard"
+        android:label="fragment_employee_dash_board"
+        tools:layout="@layout/fragment_employee_dash_board" >
+        <action
+            android:id="@+id/action_employeeDashBoard_to_punchInFragment"
+            app:destination="@id/punchInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/punchInFragment"
+        android:name="com.jams.vedantattendancesystem.PunchInFragment"
+        android:label="fragment_punch_in"
+        tools:layout="@layout/fragment_punch_in" />
+</navigation>
