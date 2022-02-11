@@ -61,18 +61,18 @@ class PunchInFragment : Fragment() {
         imageView = view.findViewById<ImageView>(R.id.imageView)
 
         locationEditext = view.findViewById<EditText>(R.id.LocationEditText)
-        val locationManager = getActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
+                requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this, arrayOf<String>(
-                    Manifest.permission.ACCESS_FINE_LOCATION, Man,
+                requireActivity(), arrayOf<String>(
+                    Manifest.permission.ACCESS_FINE_LOCATION
                     Camera.setOnClickListener {
                         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(

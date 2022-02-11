@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jams.vedantattendancesystem.adpater.PunchInAdpater
@@ -55,9 +56,9 @@ class EmployeeDashBoard : Fragment() {
 
 
     fun setUpRecyclerView() {
+val id = FirebaseAuth.getInstance().currentUser!!.uid
 
-
-        val query: Query = FirebaseFirestore.getInstance().collection("Punch")//.orderBy("product_name", Query.Direction.ASCENDING);
+        val query: Query = FirebaseFirestore.getInstance().collection("Punch").whereEqualTo("user_id",id)
         val options = FirestoreRecyclerOptions.Builder<punchInModel>()
             .setQuery(query, punchInModel::class.java)
             .build();

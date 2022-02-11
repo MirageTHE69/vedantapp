@@ -6,10 +6,8 @@ import retrofit2.Response
 import java.io.IOException
 
 
-sealed class Resource<T>(val data: Any? = null, val message: String? = null) {
-
-    class Success<T>(data: Response<List<userModel>>) : Resource<T>(data)
-    class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
-    class Loading<T>(data: T? = null) : Resource<T>(data)
-
+sealed class Resource<T>(val data:T? = null,val msg :String? =null ){
+    class Success<T>(data: T?=null):Resource<T>(data)
+    class Error<T>(msg: String):Resource<T>(msg = msg)
+    class Loading<T>(data: T?= null):Resource<T>(data)
 }
