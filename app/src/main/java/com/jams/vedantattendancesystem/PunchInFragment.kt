@@ -109,7 +109,7 @@ class PunchInFragment : Fragment() {
 
 
 
-        getCurrentLocation();
+
 
 
         return view
@@ -122,17 +122,15 @@ class PunchInFragment : Fragment() {
 
                 val user_id = FirebaseAuth.getInstance().currentUser!!.uid
                 Log.d(TAG, "onStart: oNlcleick")
-               val  loc = async {  getCurrentLocation()}
+                getCurrentLocation(user_id)
 
-                delay(5000)
-                viewmodel.createPunch(punchInModel(null, "IN", user_id, location =  loc.await() ))
             }
 
         }
 
     }
 
-    private fun getCurrentLocation() :String{
+    private fun getCurrentLocation(user_id:String) :String{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity()?.let {
                     ActivityCompat.checkSelfPermission(
@@ -159,6 +157,10 @@ class PunchInFragment : Fragment() {
                                         "onLocationResult: " + locationResult.getLocations()
                                     )
                                     Location = "https://maps.google.com/?q=$latitude,$longitude"
+
+
+                                        viewmodel.createPunch(punchInModel(null, "IN", user_id, location = Location))
+
                                     Log.d("locatio",""+Location)
                                 }
                             }
