@@ -61,9 +61,9 @@ class PunchInFragment : Fragment() {
         imageView = view.findViewById<ImageView>(R.id.imageView)
 
         locationEditext = view.findViewById<EditText>(R.id.LocationEditText)
-        val locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager = getActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (ActivityCompat.checkSelfPermission(
-                this,
+                requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this,
@@ -77,7 +77,7 @@ class PunchInFragment : Fragment() {
                         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(
                                 arrayOf(Manifest.permission.CAMERA),
-                                com.jams.vedantattendancesystem.PunchInFragment.MY_CAMERA_PERMISSION_CODE
+                                .MY_CAMERA_PERMISSION_CODE
                             )
                         } else {
                             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
