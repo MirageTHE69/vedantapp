@@ -58,7 +58,7 @@ class EmployeeDashBoard : Fragment() {
     fun setUpRecyclerView() {
 val id = FirebaseAuth.getInstance().currentUser!!.uid
 
-        val query: Query = FirebaseFirestore.getInstance().collection("Punch").whereEqualTo("user_id",id)
+        val query: Query = FirebaseFirestore.getInstance().collection("Punch_table").whereEqualTo("user_id",id)
         val options = FirestoreRecyclerOptions.Builder<punchInModel>()
             .setQuery(query, punchInModel::class.java)
             .build();
