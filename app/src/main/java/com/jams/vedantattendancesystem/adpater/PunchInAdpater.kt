@@ -1,5 +1,6 @@
 package com.jams.vedantattendancesystem.adpater
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -20,7 +21,6 @@ class PunchInAdpater (options: FirestoreRecyclerOptions<punchInModel>):
 
         var time = itemView.findViewById<TextView>(R.id.punchtime)
         var punchIn = itemView.findViewById<TextView>(R.id.punchInTxt)
-        var punchOut = itemView.findViewById<TextView>(R.id.punchOutTxt)
         var punchLocation = itemView.findViewById<TextView>(R.id.LocationCard)
 
     }
@@ -30,12 +30,12 @@ class PunchInAdpater (options: FirestoreRecyclerOptions<punchInModel>):
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: punchInModel) {
 
         var timestamp2 =  Date(model.time!!.toDate().toString())
         holder.time.text = timestamp2.toString()
-        holder.punchIn.text  = model.punchType
-        holder.punchOut.text = model.punchType
+        holder.punchIn.text  = "Punch: ${model.punchType}"
         holder.punchLocation.text = model.location
 
     }
