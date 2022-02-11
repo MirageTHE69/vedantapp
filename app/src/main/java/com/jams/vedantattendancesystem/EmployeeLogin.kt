@@ -1,6 +1,5 @@
 package com.jams.vedantattendancesystem
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
@@ -37,9 +35,9 @@ class EmployeeLogin : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view : View = inflater.inflate(R.layout.fragment_employee_login, container, false)
-         Email= view.findViewById(R.id.EmployeeEmailEditText)
-         Password = view.findViewById(R.id.EmployeePasswordEditText)
-        val LoginBtn: Button = view.findViewById<Button>(R.id.LoginEmployeeButton)
+         Email= view.findViewById(R.id.AdminEmailEditText)
+         Password = view.findViewById(R.id.AdminPasswordEditText)
+        val LoginBtn: Button = view.findViewById<Button>(R.id.AdminEmployeeButton)
          auth = FirebaseAuth.getInstance()
         val SignUpTextView: TextView = view.findViewById<TextView>(R.id.SignUpTextView)
 
