@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.findNavController
-
-
+import androidx.navigation.fragment.findNavController
 
 
 class LoginFragment : Fragment() {
@@ -28,7 +27,11 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
 
        EmployeeBtn  = view.findViewById(R.id.SignInButtonEmployee)
+        val AdminButton : Button = view.findViewById(R.id.SignInButtonAdmin)
 
+        AdminButton.setOnClickListener{
+            findNavController().navigate(R.id.adminLoginFragment)
+        }
         return view
     }
 
