@@ -5,13 +5,17 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
     android:background="#988D8D"
-    android:layout_marginTop="5dp"
+    android:layout_margin="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:background="#C3C2C1"
         >
 
         <TextView

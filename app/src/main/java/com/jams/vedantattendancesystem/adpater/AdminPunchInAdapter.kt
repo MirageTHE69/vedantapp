@@ -29,7 +29,7 @@ class AdminPunchInAdapter (options: FirestoreRecyclerOptions<punchInModel>):
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.punchincard, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.adminpunchdetailcard, parent, false))
 
     }
 
@@ -42,7 +42,9 @@ class AdminPunchInAdapter (options: FirestoreRecyclerOptions<punchInModel>):
         holder.punchLocation.text = model.location
         val user = FirebaseFirestore.getInstance().collection("Users").document(model.user_id)
         user.get().addOnSuccessListener {
-            holder.UsernameText.text = it.get("email").toString()
+            if (it.get("email").toString().isNotBlank()) {
+                holder.UsernameText.text = " "+it.get("email")
+            }
 
         }
 

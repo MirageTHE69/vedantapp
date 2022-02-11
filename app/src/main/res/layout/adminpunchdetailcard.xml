@@ -8,7 +8,7 @@
     android:layout_margin="10dp"
 
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="120dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,71 +17,72 @@
 
         >
 
+
         <TextView
             android:id="@+id/UserNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="userName"
+            android:layout_marginStart="16dp"
+            android:text="Email id"
             android:textColor="@color/black"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:textSize="19sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="36dp"
             android:text="Time:"
             android:textColor="@color/black"
-            android:textSize="18dp"
+            android:textSize="17sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/LocationCard"
+            app:layout_constraintEnd_toStartOf="@+id/punchtime"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toBottomOf="@+id/UserNameTextView" />
 
         <TextView
             android:id="@+id/punchtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="36dp"
             android:text="9:50 Pm"
             android:textColor="@color/black"
             android:textSize="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.054" />
-
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/punchInTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginStart="16dp"
             android:text="Punch IN"
             android:textColor="@color/black"
             android:textSize="15dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/LocationCard"
-            app:layout_constraintStart_toStartOf="parent" />
-
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/LocationCard" />
 
         <TextView
             android:id="@+id/LocationCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Punch Out"
+            android:layout_marginStart="16dp"
+            android:text="Location"
             android:textColor="@color/black"
             android:textSize="15dp"
-            android:layout_marginStart="24dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toTopOf="@+id/punchInTxt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

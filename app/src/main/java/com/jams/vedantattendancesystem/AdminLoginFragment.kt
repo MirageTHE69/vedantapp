@@ -17,7 +17,9 @@ import com.google.firebase.auth.FirebaseUser
 
 class AdminLoginFragment : Fragment() {
     lateinit var auth : FirebaseAuth
-
+    lateinit var    EmailEditext : EditText
+    lateinit var  PasswordEditText:EditText
+    lateinit var SubmitButton : Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,25 +31,33 @@ class AdminLoginFragment : Fragment() {
     ): View? {
         val view : View = inflater.inflate(R.layout.fragment_admin_login, container, false)
         // Inflate the layout for this fragment
-        val EmailEditext : EditText = view.findViewById(R.id.AdminEmailEditText)
-        val PasswordEditText : EditText = view.findViewById(R.id.AdminPasswordEditText)
-        val SubmitButton : Button = view.findViewById(R.id.SignInButtonAdmin)
+         EmailEditext  = view.findViewById(R.id.AdminEmailEditText)
+        PasswordEditText  = view.findViewById(R.id.AdminPasswordEditText)
+         SubmitButton  = view.findViewById(R.id.AdminEmployeeButton)
 
-        val Email : String = EmailEditext.text.toString()
-        val Pass : String = PasswordEditText.text.toString()
+
 
         auth = FirebaseAuth.getInstance()
 
+
+        return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+
         SubmitButton.setOnClickListener {
+            val Email : String = EmailEditext.text.toString()
+            val Pass : String = PasswordEditText.text.toString()
             if(Email == "admin@attendancesystem.com"){
                 auth.signInWithEmailAndPassword(Email, Pass)
                     .addOnCompleteListener(requireActivity(),
                         OnCompleteListener<AuthResult?> { task ->
                             if (task.isSuccessful) {
                                 val LoginUser: FirebaseUser? = auth.getCurrentUser()
-                                view?.findNavController()?.navigate(R.id.adminDashboard)
+                                it.findNavController().navigate(R.id.adminDashboard)
                             } else {
-                                    Toast.makeText(requireContext(),"Incorrect User ID",Toast.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(),"Incorrect User ID",Toast.LENGTH_LONG).show()
                             }
                         })
             }
@@ -56,7 +66,6 @@ class AdminLoginFragment : Fragment() {
 
 
         }
-        return view
     }
 
 
