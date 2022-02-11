@@ -6,8 +6,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.type.Date
+
 import com.jams.vedantattendancesystem.R
 import com.jams.vedantattendancesystem.model.punchInModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PunchInAdpater (options: FirestoreRecyclerOptions<punchInModel>):
     FirestoreRecyclerAdapter<punchInModel, PunchInAdpater.ViewHolder>(options)
@@ -28,7 +32,8 @@ class PunchInAdpater (options: FirestoreRecyclerOptions<punchInModel>):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: punchInModel) {
 
-        holder.time.text = model.time.toString()
+        var timestamp2 =  Date(model.time!!.toDate().toString())
+        holder.time.text = timestamp2.toString()
         holder.punchIn.text  = model.punchType
         holder.punchOut.text = model.punchType
         holder.punchLocation.text = model.location

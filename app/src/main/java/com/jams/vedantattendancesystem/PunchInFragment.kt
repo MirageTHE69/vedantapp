@@ -1,6 +1,7 @@
 package com.jams.vedantattendancesystem
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
@@ -26,18 +27,19 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.common.api.internal.ActivityLifecycleObserver.of
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.jams.vedantattendancesystem.model.punchInModel
 import com.jams.vedantattendancesystem.viewmodel.punchInViewModel
-import java.util.jar.Manifest
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
 
 
 class PunchInFragment : Fragment() {
@@ -53,7 +55,7 @@ class PunchInFragment : Fragment() {
     var describeContents = 0.0
     lateinit var addresses: List<Address>
     lateinit var geocoder: Geocoder
-    lateinit var  Location  : String
+     var  Location  : String= ""
     lateinit var  viewmodel : punchInViewModel
 
 
@@ -71,13 +73,18 @@ class PunchInFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
+
 
             checkPermission(android.Manifest.permission.ACCESS_FINE_LOCATION,MY_LOCATION_PERMISSION_CODE)
             viewmodel = activity?.let {
-                ViewModelProvider(requireActivity()).get(punchInViewModel::class.java)
+                ViewModelProvider(it).get(punchInViewModel::class.java)
             } ?: throw Exception("Activity is null")
-        }
+
+
+        locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 5000
+        locationRequest.fastestInterval = 2000
     }
 
     override fun onCreateView(
@@ -99,13 +106,6 @@ class PunchInFragment : Fragment() {
 
 
 
-        punchinbtn.setOnClickListener {
-
-            val  user_id = FirebaseAuth.getInstance().currentUser!!.uid
-
-            viewmodel.createPunch(punchInModel(null,"IN",user_id, location = location.toString()))
-
-        }
 
 
 
@@ -115,7 +115,24 @@ class PunchInFragment : Fragment() {
         return view
     }
 
-    private fun getCurrentLocation() {
+    override fun onStart() {
+        super.onStart()
+        punchinbtn.setOnClickListener {
+            lifecycleScope.launchWhenStarted {
+
+                val user_id = FirebaseAuth.getInstance().currentUser!!.uid
+                Log.d(TAG, "onStart: oNlcleick")
+               val  loc = async {  getCurrentLocation()}
+
+                delay(5000)
+                viewmodel.createPunch(punchInModel(null, "IN", user_id, location =  loc.await() ))
+            }
+
+        }
+
+    }
+
+    private fun getCurrentLocation() :String{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity()?.let {
                     ActivityCompat.checkSelfPermission(
@@ -146,6 +163,7 @@ class PunchInFragment : Fragment() {
                                 }
                             }
                         }, Looper.getMainLooper())
+                    return Location
                 } else {
                     turnOnGPS()
                 }
@@ -156,6 +174,7 @@ class PunchInFragment : Fragment() {
                 )
             }
         }
+        return Location
     }
 
     fun checkPermission(permission: String, requestCode: Int) {

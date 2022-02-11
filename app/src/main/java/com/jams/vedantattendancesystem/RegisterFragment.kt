@@ -1,7 +1,9 @@
 package com.jams.vedantattendancesystem
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import androidx.navigation.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.auth.User
 import com.jams.vedantattendancesystem.model.userModel
 
@@ -48,7 +51,9 @@ class RegisterFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
 
-        SignUp.setOnClickListener { v: View? -> NewRegisterUser() }
+        SignUp.setOnClickListener { 
+           NewRegisterUser() 
+        }
 
 
         // Inflate the layout for this fragment
@@ -82,8 +87,8 @@ class RegisterFragment : Fragment() {
             Password.requestFocus()
         }
         if (designation.isEmpty()) {
-            Password.error = "Designation Required"
-            Password.requestFocus()
+            Designation.error = "Designation Required"
+            Designation.requestFocus()
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -92,17 +97,20 @@ class RegisterFragment : Fragment() {
         }
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val user = userModel(name, email, designation)
-                FirebaseDatabase.getInstance().getReference("Users")
-                    .child(FirebaseAuth.getInstance().currentUser!!.uid)
-                    .setValue(user).addOnCompleteListener(OnCompleteListener<Void?> { task ->
+                val user = userModel(userName = name, email = email, desigenation =  designation)
+                FirebaseFirestore.getInstance().collection("Users")
+                    .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                    .set(user).addOnCompleteListener(OnCompleteListener<Void?> { task ->
                         if (task.isSuccessful) {
+                            Log.d(TAG, "NewRegisterUser: ${task.isComplete}")
                             view?.findNavController()?.navigate(R.id.employeeDashBoard)
 
                         } else {
-
+                            Log.d(TAG, "NewRegisterUser: ${task.exception}")
                         }
                     })
+            }else{
+                Log.d(TAG, "NewRegisterUser: ${task.exception}")
             }
         }
 

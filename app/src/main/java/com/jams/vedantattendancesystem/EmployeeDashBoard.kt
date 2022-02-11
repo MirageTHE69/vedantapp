@@ -71,6 +71,16 @@ val id = FirebaseAuth.getInstance().currentUser!!.uid
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        adpater.stopListening()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adpater.startListening()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()

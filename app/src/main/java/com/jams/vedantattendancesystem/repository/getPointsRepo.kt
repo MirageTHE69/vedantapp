@@ -12,7 +12,7 @@ class getPointsRepo {
     val firebaseAuth = FirebaseAuth.getInstance()
 
 
-    suspend fun getPointsByMonth(user_id:String,month:String):Resource<Int> {
+    suspend fun getPointsByMonth(user_id:String,month:Int):Resource<Int> {
         return try {
 
 
