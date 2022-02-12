@@ -29,6 +29,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -44,17 +46,16 @@ import kotlinx.coroutines.delay
 
 class PunchInFragment : Fragment() {
 
-    val pic_id = 123
-    val REQUEST_IMAGE_CAPTURE = 1
+
     lateinit var bitmap: Bitmap
     lateinit var locationEditext: EditText
-    lateinit var Camera: Button
-    lateinit var PunchInNowBtn:android.widget.Button
-    lateinit var imageView: ImageView
-    lateinit var location: Location
-    var describeContents = 0.0
-    lateinit var addresses: List<Address>
-    lateinit var geocoder: Geocoder
+
+
+
+    //lateinit var location: Location
+   // var describeContents = 0.0
+    //lateinit var addresses: List<Address>
+ //   lateinit var geocoder: Geocoder
      var  Location  : String= ""
     lateinit var  viewmodel : punchInViewModel
 
@@ -66,7 +67,8 @@ class PunchInFragment : Fragment() {
 
     lateinit var locationRequest: LocationRequest
     lateinit var punchinbtn : Button
-    lateinit var punchInModel: punchInModel
+    lateinit var punchOutBtn : Button
+
 
 
 
@@ -94,23 +96,16 @@ class PunchInFragment : Fragment() {
         val view : View = inflater.inflate(R.layout.fragment_punch_in, container, false)
         // Inflate the layout for this fragment
 
-        Camera = view.findViewById<Button>(R.id.CameraBtn)
-        imageView = view.findViewById<ImageView>(R.id.imageView)
 
         locationEditext = view.findViewById<EditText>(R.id.LocationEditText)
         val locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         punchinbtn = view.findViewById(R.id.PunchInNowBtn)
 
+        locationEditext.setText(Location)
 
 
-
-
-
-
-
-
-
+        punchOutBtn = view.findViewById(R.id.PunchOutnNowBtn)
 
         return view
     }
@@ -121,16 +116,19 @@ class PunchInFragment : Fragment() {
             lifecycleScope.launchWhenStarted {
 
                 val user_id = FirebaseAuth.getInstance().currentUser!!.uid
-                Log.d(TAG, "onStart: oNlcleick")
-                getCurrentLocation(user_id)
-
+                Log.d(TAG, "onStart: OnClick")
+                getCurrentLocation(user_id,"IN")
+                findNavController().navigate(R.id.employeeDashBoard)
             }
-
         }
 
+        punchOutBtn.setOnClickListener{
+            val user_id = FirebaseAuth.getInstance().currentUser!!.uid
+            getCurrentLocation(user_id,"OUT")
+            view?.findNavController()?.navigate(R.id.employeeDashBoard)
+        }
     }
-
-    private fun getCurrentLocation(user_id:String) :String{
+    private fun getCurrentLocation(user_id:String,punchType : String) :String{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity()?.let {
                     ActivityCompat.checkSelfPermission(
@@ -158,10 +156,9 @@ class PunchInFragment : Fragment() {
                                     )
                                     Location = "https://maps.google.com/?q=$latitude,$longitude"
 
+                                        viewmodel.createPunch(punchInModel(null, punchType, user_id, location = Location))
+                                    Log.d("location",""+Location)
 
-                                        viewmodel.createPunch(punchInModel(null, "IN", user_id, location = Location))
-
-                                    Log.d("locatio",""+Location)
                                 }
                             }
                         }, Looper.getMainLooper())
@@ -177,6 +174,7 @@ class PunchInFragment : Fragment() {
             }
         }
         return Location
+
     }
 
     fun checkPermission(permission: String, requestCode: Int) {

@@ -24,6 +24,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.rpc.context.AttributeContext
 import com.jams.vedantattendancesystem.adpater.AdminPunchInAdapter
 import com.jams.vedantattendancesystem.model.punchInModel
+import java.time.Instant
+import java.time.ZoneId
 import java.util.*
 
 
@@ -49,30 +51,37 @@ class AdminDashboard : Fragment() {
         // Inflate the layout for this fragment
         AdminRecyclerView = view.findViewById(R.id.AdminRcView)
         calendar = view.findViewById(R.id.calendarview)
-        var start = true;
 
-        if(start){
-
-
-            val query: Query = FirebaseFirestore.getInstance().collection("Punch_table")
-                .orderBy("time",Query.Direction.ASCENDING)
-            val options = FirestoreRecyclerOptions.Builder<punchInModel>()
-                .setQuery(query, punchInModel::class.java)
-                .build();
-
-            adapter = AdminPunchInAdapter(options)
-            AdminRecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL,false)
-            AdminRecyclerView.adapter = adapter;
-            start=false
-        }
 
         calendar.setOnDateChangeListener(CalendarView.OnDateChangeListener { _, Year, Month, DayofTheMonth ->
 
             Log.d(TAG, "CalendarView Clicked: $Year-$Month-$DayofTheMonth")
 
-            setUpRecyclerViewAdmin(date = (Date(Year,Month,DayofTheMonth)))
+            val date : Date = Date(Year - 1900,Month,DayofTheMonth)
+            val tomdate : Date = Date(Year - 1900,Month,DayofTheMonth + 1)
+            /*val dt = Instant.ofEpochSecond(date.time / 1000)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime()
+            Log.d(TAG,"TIMESTAMP CONVERT :- ${dt}")*/
+            val d1 = date.time
+            val tomd1 = tomdate.time
+            val query = FirebaseFirestore.getInstance().collection("Punch_table").whereGreaterThanOrEqualTo("time",date)
+                .whereLessThanOrEqualTo("time",tomdate)
+
+            val options = FirestoreRecyclerOptions.Builder<punchInModel>()
+                .setQuery(query, punchInModel::class.java)
+                .build();
+            adapter.updateOptions(options)
+
+            AdminRecyclerView.getRecycledViewPool().clear();
+            adapter.notifyDataSetChanged();
+
+
 
         })
+
+
+        setUpRecyclerViewAdmin()
 
         logoutBtn = view.findViewById(R.id.LogoutButton)
         logoutBtn.setOnClickListener{
@@ -87,25 +96,9 @@ class AdminDashboard : Fragment() {
     }
 
 
-    fun setUpRecyclerViewAdmin(date: Date) {
-        /*Log.d(TAG,"Date :- ${date}")
 
-        Log.d(TAG, "setUpRecyclerViewAdmin: ${date.time}")
+    fun setUpRecyclerViewAdmin() {
 
-
-        val query: Query = FirebaseFirestore.getInstance().collection("Punch_table")
-            .orderBy("time",Query.Direction.ASCENDING)
-
-
-
-
-        val options = FirestoreRecyclerOptions.Builder<punchInModel>()
-            .setQuery(query, punchInModel::class.java)
-            .build();
-
-        adapter = AdminPunchInAdapter(options)
-        AdminRecyclerView.adapter = adapter;
-        adapter.notifyDataSetChanged()*/
 
         val query: Query = FirebaseFirestore.getInstance().collection("Punch_table")
             .orderBy("time",Query.Direction.ASCENDING)
@@ -116,6 +109,7 @@ class AdminDashboard : Fragment() {
         adapter = AdminPunchInAdapter(options)
         AdminRecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL,false)
         AdminRecyclerView.adapter = adapter;
+
     }
 
     override fun onStart() {
