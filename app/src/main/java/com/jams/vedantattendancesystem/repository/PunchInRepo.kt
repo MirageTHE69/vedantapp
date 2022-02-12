@@ -14,7 +14,9 @@ class PunchInRepo {
 
 
     suspend fun createPunch(punchInModel: punchInModel):Resource<Boolean>{
+
         return try {
+
             Log.d(TAG, "createPunch: Reached repo")
             firebaseFirestore.whereEqualTo("user_id",punchInModel.user_id).whereEqualTo("timestamp",punchInModel.time).get().addOnSuccessListener {
                if(it.documents.size>1){

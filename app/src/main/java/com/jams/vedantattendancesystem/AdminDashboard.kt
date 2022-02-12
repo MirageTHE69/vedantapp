@@ -12,6 +12,7 @@ import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -115,6 +116,9 @@ class AdminDashboard : Fragment() {
     override fun onStart() {
         super.onStart()
         adapter.startListening()
+
+
+
     }
 
     override fun onStop() {

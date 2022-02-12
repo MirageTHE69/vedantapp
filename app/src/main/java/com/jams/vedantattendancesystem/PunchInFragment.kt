@@ -1,6 +1,7 @@
 package com.jams.vedantattendancesystem
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
@@ -36,12 +37,18 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.jams.vedantattendancesystem.common.CommonUtil
+import com.jams.vedantattendancesystem.common.CommonUtil.showLoadingDialog
 import com.jams.vedantattendancesystem.model.punchInModel
+import com.jams.vedantattendancesystem.viewmodel.CurrentEvent
 import com.jams.vedantattendancesystem.viewmodel.punchInViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 
 
 class PunchInFragment : Fragment() {
@@ -50,7 +57,7 @@ class PunchInFragment : Fragment() {
     lateinit var bitmap: Bitmap
     lateinit var locationEditext: EditText
 
-
+    private var loading: Dialog? = null
 
     //lateinit var location: Location
    // var describeContents = 0.0
@@ -106,6 +113,27 @@ class PunchInFragment : Fragment() {
 
 
         punchOutBtn = view.findViewById(R.id.PunchOutnNowBtn)
+        lifecycleScope.launchWhenStarted {
+            viewmodel.punchEventFlow.collect {event->
+                when(event){
+                    is CurrentEvent.Success<*> -> {
+
+                        view.findNavController().navigate(R.id.employeeDashBoard)
+
+                    }
+                    is CurrentEvent.Failure -> {
+                        Snackbar.make(requireView(),event.errorText,Snackbar.LENGTH_LONG).show()
+
+
+                    }
+                    is CurrentEvent.Loading ->{
+                       Snackbar.make(requireView(),"loading...",LENGTH_LONG).show()
+                    }
+                    else -> Unit
+                }
+
+            }
+        }
 
         return view
     }
@@ -116,17 +144,19 @@ class PunchInFragment : Fragment() {
             lifecycleScope.launchWhenStarted {
 
                 val user_id = FirebaseAuth.getInstance().currentUser!!.uid
-                Log.d(TAG, "onStart: OnClick")
                 getCurrentLocation(user_id,"IN")
-                findNavController().navigate(R.id.employeeDashBoard)
+                Log.d(TAG, "onStart: OnClick")
             }
         }
 
         punchOutBtn.setOnClickListener{
             val user_id = FirebaseAuth.getInstance().currentUser!!.uid
             getCurrentLocation(user_id,"OUT")
-            view?.findNavController()?.navigate(R.id.employeeDashBoard)
+
         }
+
+
+
     }
     private fun getCurrentLocation(user_id:String,punchType : String) :String{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -247,4 +277,5 @@ class PunchInFragment : Fragment() {
             }
         })
     }
+
 }

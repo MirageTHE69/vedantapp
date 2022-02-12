@@ -33,7 +33,7 @@ class PunchInAdpater (options: FirestoreRecyclerOptions<punchInModel>):
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: punchInModel) {
 
-        var timestamp2 =  Date(model.time!!.toDate().toString())
+        val timestamp2 =  Date(model.time?.toDate().toString())
         holder.time.text = timestamp2.toString()
         holder.punchIn.text  = "Punch: ${model.punchType}"
         holder.punchLocation.text = model.location
