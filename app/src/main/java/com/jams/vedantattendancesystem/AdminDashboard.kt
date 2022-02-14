@@ -66,7 +66,7 @@ class AdminDashboard : Fragment() {
             Log.d(TAG,"TIMESTAMP CONVERT :- ${dt}")*/
             val d1 = date.time
             val tomd1 = tomdate.time
-            val query = FirebaseFirestore.getInstance().collection("Punch_table").whereGreaterThanOrEqualTo("time",date)
+            val query = FirebaseFirestore.getInstance().collection("Punch_table").whereGreaterThanOrEqualTo("time",date).orderBy("time",Query.Direction.DESCENDING)
                 .whereLessThanOrEqualTo("time",tomdate)
 
             val options = FirestoreRecyclerOptions.Builder<punchInModel>()
@@ -102,7 +102,7 @@ class AdminDashboard : Fragment() {
 
 
         val query: Query = FirebaseFirestore.getInstance().collection("Punch_table")
-            .orderBy("time",Query.Direction.ASCENDING)
+            .orderBy("time",Query.Direction.DESCENDING)
         val options = FirestoreRecyclerOptions.Builder<punchInModel>()
             .setQuery(query, punchInModel::class.java)
             .build();

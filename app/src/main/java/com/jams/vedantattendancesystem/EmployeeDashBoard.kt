@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,6 +56,7 @@ class EmployeeDashBoard : Fragment() {
         UserNameTextView = view.findViewById(R.id.UserNameTextView)
         LogoutBtn.setOnClickListener{
             Firebase.auth.signOut()
+            it.findNavController().navigate(R.id.loginFragment)
         }
 
         dateTextView = view.findViewById(R.id.DateTextview)

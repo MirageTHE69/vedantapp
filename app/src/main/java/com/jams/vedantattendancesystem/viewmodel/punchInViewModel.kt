@@ -18,15 +18,14 @@ class punchInViewModel(application: Application) : AndroidViewModel(application)
     private val punchEventChannel = Channel<CurrentEvent>()
     val punchEventFlow =punchEventChannel.receiveAsFlow()
 
-    init {
 
-    }
 
     fun createPunch(punchInModel: punchInModel) {
 
         Log.d(TAG, "createPunch: Reached createPunchMethod")
         viewModelScope.launch(IO) {
             punchEventChannel.send(CurrentEvent.Loading)
+
             Log.d(TAG, "createPunch: Reached viewModelScope")
             val result = repository.createPunch(punchInModel);
             Log.d(TAG, "createPunch: Reached repo")

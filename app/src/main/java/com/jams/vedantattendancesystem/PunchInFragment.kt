@@ -124,9 +124,9 @@ class PunchInFragment : Fragment() {
                     is CurrentEvent.Failure -> {
                         Snackbar.make(requireView(),event.errorText,Snackbar.LENGTH_LONG).show()
 
-
                     }
                     is CurrentEvent.Loading ->{
+                        Log.d(TAG, "onCreateView: Loading")
                        Snackbar.make(requireView(),"loading...",LENGTH_LONG).show()
                     }
                     else -> Unit
